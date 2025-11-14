@@ -1,0 +1,75 @@
+import example.*
+import aparatos.*
+
+describe "group of tests for pepita" {
+  const leo = new Paciente(edad=40,dolor=10,fortaleza=20)
+  const mile = new Paciente(edad=3,dolor=30,fortaleza=50)
+
+  const magneto = new Magneto()
+  const bici = new Bici()
+  const mini = new Minitramp()
+
+  test "leo puede usar los 3 aparatos" {
+    assert.that(magneto.puedeSerUsadoPor(leo))
+    assert.that(bici.puedeSerUsadoPor(leo))
+    assert.that(mini.puedeSerUsadoPor(leo))
+  }
+
+  test "mile solo puede usar el magneto"{
+    assert.notThat(bici.puedeSerUsadoPor(mile))
+    assert.notThat(mini.puedeSerUsadoPor(mile))
+    assert.that(magneto.puedeSerUsadoPor(mile))
+  }
+
+  test "Después de usar el magneto una vez, el nivel de dolor de Leonardo baja a 9"{
+    leo.usar(magneto)
+    assert.equals(leo.dolor(), 9)
+  }
+
+  test "Después de usar el magneto una vez, el nivel de dolor de Milena baja a 27."{
+    mile.usar(magneto)
+    assert.equals(mile.dolor(), 27)
+  }
+
+  test "Después de usar la bicicleta una vez, el nivel de dolor de Leonardo baja a 6, y la fortaleza sube a 23"{
+    leo.usar(bici)
+    assert.equals(leo.dolor(), 6)
+    assert.equals(leo.fortaleza(), 23)
+  }
+
+  test "Después de usar el minitramp una vez, la fortaleza de Leonardo sube a 24."{
+    leo.usar(mini)
+    assert.equals(leo.fortaleza(), 24)
+  }
+}
+
+describe "Test parte 2"{
+  const magneto = new Magneto()
+  const bici = new Bici()
+  const mini = new Minitramp()
+  
+  const leo = new Paciente(
+    edad=40,dolor=10,fortaleza=20,
+    rutina=[bici,mini,bici,magneto]
+  )
+
+  const mile = new Paciente(
+    edad=3,dolor=30,fortaleza=50,
+    rutina=[magneto,bici]
+  )
+
+  test "Leonardo puede hacer la rutina que tiene asignada"{
+    assert.that(leo.puedeHacerRutina())
+  }
+
+  test "Leo Después de hacer la rutina, su nivel de dolor baja a 1.8, y su fortaleza sube a 30."{
+    leo.hacerRutina()
+    assert.equals(1.8, leo.dolor())
+    assert.equals(30, leo.fortaleza())
+  }
+
+  test "Milena no puede hacer la rutina que tiene asignada."{
+    assert.notThat(mile.puedeHacerRutina())
+  }
+
+}
